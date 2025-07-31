@@ -1,0 +1,5 @@
+ipykernel==6.30.0
+pandas==2.3.1
+matplotlib==3.10.3
+tushare==1.4.21
+dotenv==0.9.9
