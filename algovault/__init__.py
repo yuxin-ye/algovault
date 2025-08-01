@@ -248,17 +248,24 @@ def evaluate_strategy(strategy_nav, mao_nav, hs300_nav):
     }
 
 # 可视化函数
-def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data):
+def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data, language='Chi'):
     """可视化策略结果"""
     # 1. 绘制净值曲线对比
     plt.figure(figsize=(14, 6))
-    plt.plot(strategy_nav.index, strategy_nav, label='均值回归策略', linewidth=2)
-    plt.plot(mao_nav.index, mao_nav, label='茅指数', linewidth=2)
-    plt.plot(hs300_nav.index, hs300_nav, label='沪深300', linewidth=2)
-    
-    plt.title('策略净值与基准指数对比', fontsize=14)
-    plt.xlabel('日期', fontsize=12)
-    plt.ylabel('净值', fontsize=12)
+    if language == 'Chi':
+        plt.plot(strategy_nav.index, strategy_nav, label='均值回归策略', linewidth=2)
+        plt.plot(mao_nav.index, mao_nav, label='茅指数', linewidth=2)
+        plt.plot(hs300_nav.index, hs300_nav, label='沪深300', linewidth=2)
+        plt.title('策略净值与基准指数对比', fontsize=14)
+        plt.xlabel('日期', fontsize=12)
+        plt.ylabel('净值', fontsize=12)
+    elif language == 'Eng':
+        plt.plot(strategy_nav.index, strategy_nav, label='Strategy', linewidth=2)
+        plt.plot(mao_nav.index, mao_nav, label='mao', linewidth=2)
+        plt.plot(hs300_nav.index, hs300_nav, label='HS300', linewidth=2)
+        plt.title('Net Value of the Strategy and Benchmark Indexes', fontsize=14)
+        plt.xlabel('Date', fontsize=12)
+        plt.ylabel('Nav', fontsize=12)
     plt.legend(fontsize=10)
     plt.grid(True, alpha=0.3)
     plt.xticks(rotation=45)
@@ -275,7 +282,10 @@ def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data):
         plt.grid(True, alpha=0.3)
         plt.tight_layout()
         
-    plt.suptitle('各股票持仓状态变化', fontsize=14)
+    if language == 'Chi':
+        plt.suptitle('各股票持仓状态变化', fontsize=14)
+    elif language == 'Eng':
+        plt.suptitle('Changes in Stocks\' Holding Position', fontsize=14)
     plt.tight_layout()  # 调整布局，避免标题重叠
     plt.show()
     
@@ -288,7 +298,10 @@ def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data):
         plt.subplot(2, 2, i+1)
         
         # 绘制收盘价和MA5
-        plt.plot(df.index, df['closePrice'], 'b-', label='收盘价')
+        if language == 'Chi':
+            plt.plot(df.index, df['closePrice'], 'b-', label='收盘价')
+        elif language == 'Eng':
+            plt.plot(df.index, df['closePrice'], 'b-', label='close')
         plt.plot(df.index, df['closePrice'].rolling(window=5).mean(), 'r--', label='MA5')
         
         # 标记持仓状态
@@ -311,13 +324,20 @@ def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data):
             plt.axvspan(start, end, alpha=0.2, color='green')
         
         plt.title(f'{_stock_mapping[ticker]}', fontsize=12)
-        plt.xlabel('日期')
-        plt.ylabel('收盘价')
         plt.legend(loc=2)
         plt.grid(True, alpha=0.3)
         plt.xticks(rotation=45)
+        if language == 'Chi':
+            plt.xlabel('日期')
+            plt.ylabel('价格')
+        elif language == 'Eng':
+            plt.xlabel('Date')
+            plt.ylabel('Price')
     
-    plt.suptitle('部分股票的收盘价、MA5和持仓情况', fontsize=14)
+    if language == 'Chi':
+        plt.suptitle('部分股票的收盘价、MA5和持仓情况', fontsize=14)
+    elif language == 'Eng':
+        plt.suptitle('Closing Price, MA5 and Holding Position(partial)', fontsize=14)
     plt.tight_layout()
     plt.show()
 
