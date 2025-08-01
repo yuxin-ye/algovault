@@ -272,7 +272,8 @@ visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data)
 
 本项目支持在CSDN旗下的InsCodeAI云平台中运行，即读者可直接在浏览器中进行运行调试，无需安装。为避免InsCodeAI中的中文字体显示问题，读者可使用已将可视化中文部分转换为英文的Quantitative_analysis_inscode.ipynb文件进行复现。此外，由于InsCodeAI并未直接提供Jupyter Notebook模板，读者需要根据以下步骤通过命令行自行部署Jupyter Notebook。
 
-1. **创建Python项目** 在InsCodeAI中新建一个项目，该项目会自动同步到GitCode，实现一键托管和版本管理。在InsCodeAI首页点击"我的项目"-"创建项目"-"从Git导入"-"其他"，输入以下仓库地址：
+1. **创建Python项目** \
+在InsCodeAI中新建一个项目，该项目会自动同步到GitCode，实现一键托管和版本管理。在InsCodeAI首页点击"我的项目"-"创建项目"-"从Git导入"-"其他"，输入以下仓库地址：
 
    ```bash
    https://gitcode.com/yuxin_ye/algovault.git
@@ -280,13 +281,15 @@ visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data)
 
    语言环境选择Python，版本选择python3.11，点击"导入项目"。
 
-2. **安装依赖** 打开终端，执行以下命令安装必要的依赖包：
+2. **安装依赖** \
+打开终端，执行以下命令安装必要的依赖包：
 
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **配置Jupyter Notebook** 为了便于访问，可以创建一个自定义配置文件jupyter_notebook_config.py：
+3. **配置Jupyter Notebook** \
+为了便于访问，可以创建一个自定义配置文件jupyter_notebook_config.py：
 
    ```bash
    c.NotebookApp.disable_check_xsrf = True
@@ -301,7 +304,8 @@ visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data)
    export TUSHARE_API_KEY='你的Tushare API密钥'
    ```
 
-5. **启动Jupyter Notebook** 运行以下命令启动服务：
+5. **启动Jupyter Notebook** \
+运行以下命令启动服务：
 
    ```bash
    jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --config=./jupyter_notebook_config.py
