@@ -5,18 +5,12 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
 # 股票代码与名称映射
-STOCK_MAPPING = {
-    '600519': '贵州茅台',
-    '600036': '招商银行',
-    '600900': '长江电力', 
-    '600276': '恒瑞医药',
-    '600309': '万华化学',
-    '600887': '伊利股份',
-    '600690': '海尔智家',
-    '600436': '片仔癀',
-    '600585': '海螺水泥',
-    '600763': '通策医疗'  
-}
+_stock_mapping = {}
+
+def set_stock_mapping(mapping):
+    """设置股票代码与名称映射"""
+    global _stock_mapping
+    _stock_mapping = mapping
 
 def init_tushare(api_key):
     """初始化Tushare API连接"""
@@ -275,8 +269,8 @@ def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data):
     plt.figure(figsize=(14, 8))
     for i, ticker in enumerate(positions.columns):
         plt.subplot(5, 2, i+1)
-        plt.plot(positions.index, positions[ticker], label=f'{ticker} ({STOCK_MAPPING[ticker]})')
-        plt.title(STOCK_MAPPING[ticker], fontsize=10)
+        plt.plot(positions.index, positions[ticker], label=f'{ticker} ({_stock_mapping[ticker]})')
+        plt.title(_stock_mapping[ticker], fontsize=10)
         plt.ylim(-0.1, 1.1)
         plt.grid(True, alpha=0.3)
         plt.tight_layout()
@@ -316,7 +310,7 @@ def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data):
             end = pos.index[-1]  # 如果最后一天仍持仓，使用最后一个交易日作为结束
             plt.axvspan(start, end, alpha=0.2, color='green')
         
-        plt.title(f'{STOCK_MAPPING[ticker]}', fontsize=12)
+        plt.title(f'{_stock_mapping[ticker]}', fontsize=12)
         plt.xlabel('日期')
         plt.ylabel('收盘价')
         plt.legend(loc=2)
