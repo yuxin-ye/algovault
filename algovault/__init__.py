@@ -320,3 +320,27 @@ def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data):
     plt.suptitle('部分股票的收盘价、MA5和持仓情况', fontsize=14)
     plt.tight_layout()
     plt.show()
+
+
+#滚动持有测算
+def rolling_win_rate(data, holding_period=252):
+    """
+    计算滚动持有胜率
+    :param data: 包含日期和净值的DataFrame
+    :param holding_period: 持有期交易日数（默认252天≈12个月）
+    :return: 正收益概率
+    """
+    # 计算未来持有期结束时的净值
+    data['future_nav'] = data['nav'].shift(-holding_period)
+    
+    # 计算持有期收益率
+    data['return'] = (data['future_nav'] - data['nav']) / data['nav']
+    
+    # 删除无效数据
+    valid_data = data.dropna(subset=['return'])
+    
+    # 计算正收益概率
+    positive_count = (valid_data['return'] > 0).sum()
+    total_count = len(valid_data)
+    
+    return positive_count / total_count
