@@ -245,6 +245,33 @@ Output:
 卡玛比率: 策略 3.22 | 茅指数 0.54 | HS300 0.01
 ```
 
+除以上常见的投资组合评估指标外，在实际投资场景中，还会使用达标率（评估策略是否稳定达标）、胜率（常用于高频交易、短线策略评估）等其他指标，读者可根据实际需求进行选择。
+
+```Python
+from algovault import calculate_probability, rolling_win_rate
+
+Date = mao_returns.index
+df = pd.DataFrame(strategy_nav, index=Date, columns=['nav']).dropna()
+
+TARGET = 0.1  # 目标收益率10%
+month = 3 # 持有期3个月
+
+# 计算达标概率
+probability = calculate_probability(df, TARGET, month)
+print(f"累计收益率达标概率：{probability:.2%}")
+
+# 计算3个月持有期胜率（假设252个交易日）
+win_rate = rolling_win_rate(df, holding_period=month*21)
+print(f'滚动持有3个月正收益概率：{win_rate:.2%}')
+```
+
+Output:
+
+```
+累计收益率达标概率：63.16%
+滚动持有3个月正收益概率：85.19%
+```
+
 ### 3.4 可视化展示
 
 以下通过三个维度的图表来全面展示策略效果：

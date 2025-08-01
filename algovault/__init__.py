@@ -322,6 +322,41 @@ def visualize_results(strategy_nav, mao_nav, hs300_nav, positions, stock_data):
     plt.show()
 
 
+# 达标率测算
+def calculate_probability(data, TARGET, month):
+    qualified_count = 0  # 达标次数
+    valid_buy_dates = 0  # 有效买入日期数
+
+    for buy_date in data.index:
+        # 计算观察窗口的起始和结束日期
+        obs_start = buy_date + pd.DateOffset(months=0) # 不设不止盈观察期
+        obs_end = buy_date + pd.DateOffset(months=month)
+    
+        # 检查结束日期是否在数据范围内
+        if obs_end > data.index[-1]:
+            continue  # 跳过数据不足的日期
+    
+        # 获取观察窗口内的净值数据
+        window_data = data.loc[obs_start:obs_end]
+        if window_data.empty:
+            continue  # 窗口无数据则跳过
+    
+        valid_buy_dates += 1
+    
+        # 获取买入净值
+        nav_start = data.loc[buy_date, 'nav']
+    
+        # 遍历观察窗口的每个日期计算动态费率
+        for sell_date in window_data.index:
+            # 计算收益率
+            return_rate = ((window_data.loc[sell_date, 'nav'])/ nav_start) - 1
+            # 判断是否达标
+            if return_rate >= TARGET:
+                qualified_count += 1
+                break  # 达标后不再检查后续日期
+    return qualified_count / valid_buy_dates if valid_buy_dates > 0 else 0
+
+
 #滚动持有测算
 def rolling_win_rate(data, holding_period=252):
     """
